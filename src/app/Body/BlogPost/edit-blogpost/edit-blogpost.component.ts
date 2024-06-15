@@ -19,6 +19,7 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
   id: string | null = null
   editSubscription?: Subscription
   updateSubscription?: Subscription
+  getSubscrption?: Subscription
   model?:BlogPostModel
   categorysub$?: Observable<GetAllCategories[]>
   selectedCat?: string[] 
@@ -39,7 +40,7 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
         this.id = parms.get('id')
 
         if (this.id){
-          this.editservices.GetBlogPostById(this.id).subscribe({
+          this.getSubscrption = this.editservices.GetBlogPostById(this.id).subscribe({
             next: (response) => {
               this.model = response;
               this.selectedCat = response.categoryResponse.map(x => x.id)
@@ -76,6 +77,7 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.editSubscription?.unsubscribe();
+    this.getSubscrption?.unsubscribe();
     this.updateSubscription?.unsubscribe();
   }
 
