@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="mt-3">
+        <h1> BlogPost List</h1>
+        <div class="d-flex justify-content-end mt-3">
+            <a [routerLink]="['/admin/blogpost/add']" class="btn btn-primary"> Add BlogPost</a>
+        </div>
+
+        <ng-container *ngIf="blogPost$ | async as blogPost">
+            <table class="table table-bordered table-hover mt-3">
+                <thead>
+                    <tr>
+                        <th> Title </th>
+                        <th> Short Discription</th>
+                        <th> Author </th>
+                        <th> Is Visible? </th>
+                        <th> Categories </th>
+                        <th> Edit </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let blogposts of blogPost">
+                        <td>{{blogposts.title}}</td>
+                        <td>{{blogposts.shortDescription}}</td>
+                        <td>{{blogposts.author}}</td>
+                        <td>{{blogposts.isVisible}}</td>
+                        <td>
+                            <span *ngFor="let category of blogposts.categoryResponse">
+                                <span class="badge text-bg-secondary">{{ category.name }}</span>
+                            </span>
+                        </td>
+                        <td>
+                            <a class="btn btn-light" [routerLink]="['/admin/blogpost/', blogposts.id]" > Edit </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-container>
+    </div>
+</div>
+
