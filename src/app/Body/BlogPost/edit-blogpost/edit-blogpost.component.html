@@ -37,7 +37,9 @@
                 </div>
 
                 <div class="mt-2">
-                    <label for="FeaturedImageURL" class="form-label"> Featured Image URL</label>
+                    <label for="FeaturedImageURL" class="form-label"> Featured Image URL
+                        <button type="button" class="btn btn-light m-5"(click)="OpenImagePopUp()"> Select Image</button>
+                    </label>
 
                     <ng-container *ngIf="model.featuredImageURL !== ''">
                         <div>
@@ -81,11 +83,20 @@
                 </ng-container>
               </div>
 
-                <div class="mt-2">
+                <div class="mt-2 d-flex">
                     <button class="btn btn-primary" type="submit">Save</button>
+                    <button class="btn btn-danger ms-3" type="submit" (click)="DeleteBlogPost()">Delete</button>
                 </div>
             </div>
         </form>
 
     </ng-container>
+</div>
+
+
+<div class="image-selector-style" [ngClass]="{'d-block': isImagePopUpVisible,
+    'd-none': !isImagePopUpVisible }">
+    <button class="btn btn-light" type="button" style="position: fixed; top: 10px; right: 10px;"
+     (click)="ClosePopup()"> X </button>
+    <app-image-selector></app-image-selector>
 </div>

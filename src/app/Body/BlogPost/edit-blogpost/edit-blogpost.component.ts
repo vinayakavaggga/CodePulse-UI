@@ -17,13 +17,18 @@ import { updateBlogPostModel } from '../Models/update-blogPost.model';
 export class EditBlogpostComponent implements OnInit, OnDestroy {
 
   id: string | null = null
+  selectedCat?: string[]
+  isImagePopUpVisible : boolean = false;
+
+  categorysub$?: Observable<GetAllCategories[]>
+  
+  updateModel? : UpdateCategoryModel
+  model?:BlogPostModel
+
   editSubscription?: Subscription
   updateSubscription?: Subscription
   getSubscrption?: Subscription
-  model?:BlogPostModel
-  categorysub$?: Observable<GetAllCategories[]>
-  selectedCat?: string[] 
-  updateModel? : UpdateCategoryModel
+  deleteSubscrption? : Subscription
 
   constructor(private route: ActivatedRoute,
     private editservices: BlogPostService,
@@ -75,10 +80,30 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
 
   }
 
+  DeleteBlogPost(): void{
+    if(this.id){
+      this.deleteSubscrption = this.editservices.DeleteBlogPost(this.id).subscribe({
+        next: (response) => {
+          this.router.navigateByUrl('/admin/blogpost');
+        }
+      })
+    }
+    
+  }
+
+  OpenImagePopUp() : void{
+    this.isImagePopUpVisible = true
+  }
+
+  ClosePopup() : void{
+    this.isImagePopUpVisible = false
+  }
+
   ngOnDestroy(): void {
     this.editSubscription?.unsubscribe();
     this.getSubscrption?.unsubscribe();
     this.updateSubscription?.unsubscribe();
+    this.deleteSubscrption?.unsubscribe();
   }
 
 

@@ -30,4 +30,8 @@ export class BlogPostService {
   UpdateBlogPostByid(id: string, model: updateBlogPostModel) : Observable<BlogPostModel>{
     return this.http.put<BlogPostModel>(`${environment.LocalUrl}/api/Blogpost/${id}`, model)
   }
+
+  DeleteBlogPost(id:string) : Observable<BlogPostModel>{
+    return this.http.delete<BlogPostModel>(`${environment.LocalUrl}/api/Blogpost/${id}`);
+  }
 }
