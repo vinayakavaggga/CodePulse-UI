@@ -1,7 +1,7 @@
 export interface ImageUpload{
-    Id : string,
-    FileName: string,
-    FileExtension : string,
-    Title: string,
-    Url: string
+    id : string,
+    fileName: string,
+    fileExtension : string,
+    title: string,
+    url: string
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ImageUpload } from '../Models/image.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -8,6 +8,14 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ImageService {
+
+selectedImage: BehaviorSubject<ImageUpload> = new BehaviorSubject<ImageUpload>({
+  id: '',
+  fileExtension : '',
+  fileName : '',
+  url : '',
+  title : ''
+}) 
 
   constructor(private http: HttpClient) { }
 
@@ -18,5 +26,17 @@ export class ImageService {
     formdata.append('title', title)
 
     return this.http.post<ImageUpload>(`${environment.LocalUrl}/api/Images`, formdata)
+  }
+
+  GetAllImages() : Observable<ImageUpload[]>{
+    return this.http.get<ImageUpload[]>(`${environment.LocalUrl}/api/Images`)
+  }
+
+  selectImage(Image : ImageUpload) : void{
+    this.selectedImage.next(Image);
+  }
+
+  OnSelectImage() : Observable<ImageUpload>{
+    return this.selectedImage.asObservable();
   }
 }

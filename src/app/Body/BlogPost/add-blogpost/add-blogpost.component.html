@@ -50,6 +50,8 @@
     
             <div class="mt-2">
                 <label for="FeaturedImageURL" class="form-label"> Featured Image URL</label>
+                
+                <button type="button" class="btn btn-light m-5"(click)="OpenImagePopUp()"> Select Image</button>
 
                 <ng-container *ngIf="model.FeaturedImageURL !== ''">
                     <div>
@@ -62,6 +64,7 @@
                 name="FeaturedImageURL"
                 id="FeaturedImageURL"
                 [(ngModel)]="model.FeaturedImageURL">
+
             </div>
     
             <div class="mt-2">
@@ -113,5 +116,12 @@
         </div>
     </form>
     
+</div>
+
+<div class="image-selector-style" [ngClass]="{'d-block': isImagePopUpVisible,
+    'd-none': !isImagePopUpVisible }">
+    <button class="btn btn-light" type="button" style="position: fixed; top: 10px; right: 10px;"
+     (click)="ClosePopup()"> X </button>
+    <app-image-selector></app-image-selector>
 </div>
 
