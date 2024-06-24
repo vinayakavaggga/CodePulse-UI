@@ -27,6 +27,10 @@ export class BlogPostService {
     return this.http.get<BlogPostModel>(`${environment.LocalUrl}/api/Blogpost/${id}`)
   }
 
+  GetBlogPostByUrl(url: string): Observable<BlogPostModel>{
+    return this.http.get<BlogPostModel>(`${environment.LocalUrl}/api/Blogpost/${url}`)
+  }
+
   UpdateBlogPostByid(id: string, model: updateBlogPostModel) : Observable<BlogPostModel>{
     return this.http.put<BlogPostModel>(`${environment.LocalUrl}/api/Blogpost/${id}`, model)
   }

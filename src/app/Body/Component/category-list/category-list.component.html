@@ -6,7 +6,7 @@
 
     </div>
     
-    <ng-container *ngIf="Category$ | async as Categories">
+    <ng-container *ngIf="Category$ | async as Categories; else loader">
         <table class="table table-bordered table-hover mt-3">
             <thead>
                 <tr>
@@ -30,3 +30,11 @@
 
     </ng-container>
 </div>
+
+<ng-template #loader>
+    <div class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</ng-template>
