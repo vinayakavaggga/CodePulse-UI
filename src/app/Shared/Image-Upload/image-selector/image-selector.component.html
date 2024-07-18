@@ -4,16 +4,21 @@
     </div>
     <div class="card-body">
         <div class="d-flex flex-md-row flex-sm-column flex-wrap">
-            <div class="col-8 p-4" style="overflow-y: scroll;">
+            <div style="overflow-y: scroll; height: 500px;" class="col-8 p-4">
                 <h3 style="padding-left: 250px;">Select Uploaded Image</h3>
                 <ng-container *ngIf="images$ | async as images">
                     <div class="d-flex flex-wrap">
                         <div *ngFor="let image of images" 
-                        (click)="SelectImages(image)"
+                        
                         style="min-width: 100px; justify-content: center; cursor: pointer;"
                         class="me-1 bg-white d-flex align-items-center flex-column border p-3">
                             <img [src]="image.url" [title]="image.title" style="height: 100px;">
                             <span class="mt-1">{{image.title}}</span>
+                            <div style="display: flex;">
+                                <a class="btn btn-light mt-2 d-flex" (click)="SelectImages(image)">Select</a> 
+                                <a class="btn btn-danger mt-2 d-flex" style="margin-left: 10px;" 
+                                (click)="DeletePhoto(image.id)">Delete</a>
+                            </div>
                         </div>
                     </div>
                 </ng-container>
@@ -42,4 +47,10 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="image-selector-style" [ngClass]="{'d-block': isImagePopUpVisible,
+    'd-none': !isImagePopUpVisible }">
+    <button class="btn btn-light" type="button" style="position: fixed; top: 10px; right: 10px;"
+     (click)="ClosePopup()"> X </button>
 </div>

@@ -39,4 +39,8 @@ selectedImage: BehaviorSubject<ImageUpload> = new BehaviorSubject<ImageUpload>({
   OnSelectImage() : Observable<ImageUpload>{
     return this.selectedImage.asObservable();
   }
+
+  DeleteImages(id:string) : Observable<ImageUpload>{
+    return this.http.delete<ImageUpload>(`${environment.LocalUrl}/api/Images/${id}`)
+  }
 }
