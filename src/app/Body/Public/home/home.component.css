@@ -1,0 +1,85 @@
+.carousel-inner {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-item {
+  display: none; /* Hide all items initially */
+  justify-content: center;
+  transition: transform 0.5s ease;
+}
+
+.carousel-item.active {
+  display: flex; /* Display only the active items */
+}
+
+.card {
+  margin: 0.5rem;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: #fff;
+  z-index: 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-size: 100%, 100%;
+  border-radius: 100px;
+  padding: 30px;
+  /* width: 150px;
+  height: 100px; */
+  /* &:hover {
+    background-color:#fff;
+    border-color:#fff;
+    color:aquamarine
+  } */
+}
+
+.carousel-control-prev {
+  left: 0;
+}
+
+.carousel-control-next {
+  right: 0;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black; /* Persistent black background */
+  border-radius: 50%;
+  color: white; /* White color for icons */
+  z-index: 1;
+  transition: transform 0.3s;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  transform: scale(1.1) translateY(-50%);
+}
+
+.fa-chevron-left,
+.fa-chevron-right {
+  font-size: 18px;
+}
+
+
+

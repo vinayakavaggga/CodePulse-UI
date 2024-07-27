@@ -17,6 +17,7 @@ import { ImageSelectorComponent } from './Shared/Image-Upload/image-selector/ima
 import { HomeComponent } from './Body/Public/home/home.component';
 import { BlogDetailsComponent } from './Body/Public/blog-details/blog-details.component';
 import { FooterComponent } from './components/footer/footer/footer.component';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { FooterComponent } from './components/footer/footer/footer.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    CarouselModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
