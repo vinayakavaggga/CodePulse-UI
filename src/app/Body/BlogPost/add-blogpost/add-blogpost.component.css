@@ -1,0 +1,15 @@
+/* Custom styles for validation feedback */
+.is-invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + .75rem);
+  }
+  
+  .is-valid {
+    border-color: #28a745;
+    padding-right: calc(1.5em + .75rem);
+  }
+  
+  .invalid-feedback {
+    display: block;
+  }
+  

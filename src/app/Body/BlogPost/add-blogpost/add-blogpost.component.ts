@@ -18,7 +18,7 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   AddblogPostSubscription?: Subscription;
   categories$?: Observable<GetAllCategories[]>
   isImagePopUpVisible : boolean = false;
-  imageSubscription? : Subscription
+  imageSubscription? : Subscription;
 
   constructor(private blogPostService: BlogPostService,
     private router: Router,
@@ -64,6 +64,7 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   ClosePopup() : void{
     this.isImagePopUpVisible = false
   }
+
   ngOnDestroy(): void {
     this.AddblogPostSubscription?.unsubscribe();
     this.imageSubscription?.unsubscribe();
