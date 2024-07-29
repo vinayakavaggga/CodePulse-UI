@@ -77,7 +77,7 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
       var updateblogpost: updateBlogPostModel = {
         Title: this.model.title,
         ShortDescription: this.model.shortDescription,
-        Content: this.model.shortDescription,
+        Content: this.model.content,
         UrlHandle: this.model.urlHandle,
         FeaturedImageURL: this.model.featuredImageURL,
         DateCreated: this.model.dateCreated,

@@ -16,8 +16,8 @@
 
                 <div *ngIf="blogposts.categoryResponse" class="mt-4">
                     <span class="badge bg-secondary me-2"
-                    *ngFor="let category og blogposts.categoryResponse"> 
-                        {{category}}
+                    *ngFor="let category of blogposts.categoryResponse"> 
+                        {{category.name}}
                     </span>
                 </div>
                 
