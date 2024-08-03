@@ -4,8 +4,14 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="closeAlert()"></button>
   </div>
 
-  <div *ngIf="!errorMessage">
-    <ng-container *ngIf="filteredBlogs.length > 0; else loader">
+  <div *ngIf="loading" class="text-center mt-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !errorMessage">
+    <ng-container *ngIf="filteredBlogs.length > 0; else noResults">
       <div *ngFor="let group of filteredBlogs" class="shadow-lg p-3 mb-5 bg-white rounded"c>
         <h2 class="m-3">{{ group.category }}:</h2>
         <div *ngIf="group.blogs.length > 0">
@@ -58,10 +64,11 @@
   </div>
 </div>
 
-<ng-template #loader>
+<ng-template #noResults>
   <div class="text-center mt-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+    <div class="alert alert-warning" role="alert">
+      {{ noResultsMessage }}
     </div>
   </div>
 </ng-template>
+

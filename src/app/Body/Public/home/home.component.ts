@@ -24,6 +24,8 @@ export class HomeComponent implements OnInit {
   cardGroups: BlogPostModel[][] = [];
   groupedBlogs: GroupedBlogs[] = [];
   filteredBlogs: GroupedBlogs[] = [];
+  noResultsMessage: string | null = null;
+  loading: boolean = true;
 
   currentStartIndex : { [key: string]: number } = {};
   visibleCardCount = 3;
@@ -33,9 +35,19 @@ export class HomeComponent implements OnInit {
   constructor(private blogpostServices: BlogPostService, private searchService : SearchService){}
 
   ngOnInit(): void {
+    this.loadBlogPosts();
+
+    this.searchService.searchTerm$.subscribe(term => {
+      this.filterBlogs(term);
+    });
+  }
+
+  loadBlogPosts(): void {
+    this.loading = true; // Start loading
     this.blogPost$ = this.blogpostServices.GetBlogPost().pipe(
       catchError(error => {
         this.errorMessage = 'Failed to load blogs. Please try again later.';
+        this.loading = false; // Ensure loading is set to false on error
         return of([]); // Return an empty array to handle the error gracefully
       })
     );
@@ -43,15 +55,13 @@ export class HomeComponent implements OnInit {
     this.blogPost$.subscribe(data => {
       this.groupBlogsByCategory(data);
       this.filteredBlogs = this.groupedBlogs;
-    });
-
-    this.searchService.searchTerm$.subscribe(term => {
-      this.filterBlogs(term);
+      this.loading = false; // Ensure loading is set to false after data is loaded
     });
   }
   
   closeAlert(): void {
     this.errorMessage = null;
+    this.loadBlogPosts(); // Reload the blog posts
   }
 
   groupCards(cards: BlogPostModel[]): void {
@@ -93,15 +103,25 @@ export class HomeComponent implements OnInit {
 
   filterBlogs(term: string): void {
     if (term) {
+      const searchTermLower = term.toLowerCase();
+
       this.filteredBlogs = this.groupedBlogs.map(group => ({
         category: group.category,
         blogs: group.blogs.map(blogArray => blogArray.filter(blog =>
-          blog.title.toLowerCase().includes(term.toLowerCase()) ||
-          blog.shortDescription.toLowerCase().includes(term.toLowerCase())
+          blog.title.toLowerCase().includes(searchTermLower) ||
+          blog.shortDescription.toLowerCase().includes(searchTermLower) ||
+          group.category.toLowerCase().includes(searchTermLower) // Check in category name as well
         )).filter(blogArray => blogArray.length > 0)
       })).filter(group => group.blogs.length > 0);
+
+      if (this.filteredBlogs.length === 0) {
+        this.noResultsMessage = `No results found for "${term}".`;
+      } else {
+        this.noResultsMessage = null;
+      }
     } else {
       this.filteredBlogs = this.groupedBlogs;
+      this.noResultsMessage = null;
     }
   }
 
