@@ -23,6 +23,13 @@
           
         </ul>
         
+        <form class="d-flex" role="search" style="padding-right: 324px; width: 900px;"
+        (submit)="onSearch(searchInput.value)">
+          
+          <input #searchInput class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
       </div>
     </div>
   </nav>

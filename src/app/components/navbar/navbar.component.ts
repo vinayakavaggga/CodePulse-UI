@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SearchService } from '../Services/search.service';
 
 @Component({
   selector: 'app-navbar',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  constructor(private searchService: SearchService){}
 
+  onSearch(term: string) {
+    this.searchService.setSearchTerm(term);
+  }
 }

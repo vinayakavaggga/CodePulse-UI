@@ -18,9 +18,15 @@
                     <label for="ShortDescription" class="form-label"> Short Description</label>
                     <input class="form-control" type="text" name="ShortDescription" id="ShortDescription"
                         [(ngModel)]="model.shortDescription"#shortDescription="ngModel" required
+                        (input)="onInputChange($event)" 
                         [ngClass]="{'is-invalid': shortDescription.invalid && (shortDescription.dirty || shortDescription.touched)}">
                     <div class="invalid-feedback" *ngIf="shortDescription.invalid && (shortDescription.dirty || shortDescription.touched)">
                         <small *ngIf="shortDescription.errors?.['required']">Short Description is required.</small>
+                        <small *ngIf="shortDescription.errors?.['maxWords']">Maximum word count of 500 exceeded.</small>
+                    </div>
+                    <div class="mt-2">
+                        <small>Word Count: {{ wordCount }} / {{ maxWords }}</small>
+                        <small *ngIf="wordCount > maxWords" class="text-danger">Word count exceeds the limit!</small>
                     </div>
                 </div>
 

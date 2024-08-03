@@ -1,62 +1,67 @@
-<!-- carousel.component.html -->
 <div class="container">
-    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-      {{ errorMessage }}
-      <button type="button" class="btn-close" aria-label="Close" (click)="closeAlert()"></button>
-    </div>
-  
-    <div *ngIf="!errorMessage">
-      <ng-container *ngIf="blogPost$ | async as blogs; else loader">
-        <h2>General Topics:</h2>
-        <div id="cardCarousel" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div
-              class="carousel-item"
-              *ngFor="let group of cardGroups; let i = index"
-              [class.active]="i === 0"
-            >
-              <div class="d-flex justify-content-center">
-                <div *ngFor="let blog of group" class="card mx-2" style="width: 400px; height: 690px;">
-                  <img [src]="blog.featuredImageURL" [alt]="blog.title" class="card-img-top" />
-                  <div class="card-body">
-                    <h5 class="card-title">{{ blog.title }}</h5>
-                    <p class="card-text">{{ blog.shortDescription }}</p>
-                    <a [routerLink]="['/blog', blog.urlHandle]" class="btn btn-primary">Read More</a>
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ errorMessage }}
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeAlert()"></button>
+  </div>
+
+  <div *ngIf="!errorMessage">
+    <ng-container *ngIf="filteredBlogs.length > 0; else loader">
+      <div *ngFor="let group of filteredBlogs" class="shadow-lg p-3 mb-5 bg-white rounded"c>
+        <h2 class="m-3">{{ group.category }}:</h2>
+        <div *ngIf="group.blogs.length > 0">
+          <div [id]="'cardCarousel' + group.category" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div
+                class="carousel-item"
+                *ngFor="let cardGroup of group.blogs; let i = index"
+                [class.active]="i === currentStartIndex[group.category]"
+              >
+                <div class="d-flex justify-content-center">
+                  <div *ngFor="let blog of cardGroup" class="card mx-2" style="width: 400px; height: 690px;">
+                    <img [src]="blog.featuredImageURL" [alt]="blog.title" class="card-img-top" />
+                    <div class="card-body">
+                      <h5 class="card-title">{{ blog.title }}</h5>
+                      <p class="card-text">{{ blog.shortDescription }}</p>
+                      <a [routerLink]="['/blog', blog.urlHandle]" class="btn btn-primary">Read More</a>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              *ngIf="group.blogs.length > 1"
+              [attr.data-bs-target]="'#cardCarousel' + group.category"
+              data-bs-slide="prev"
+              (click)="previous(group.category)"
+            >
+              <span class="fa fa-chevron-left" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              *ngIf="group.blogs.length > 1"
+              [attr.data-bs-target]="'#cardCarousel' + group.category"
+              data-bs-slide="next"
+              (click)="next(group.category)"
+            >
+              <span class="fa fa-chevron-right" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
           </div>
-          <button
-            class="carousel-control-prev"
-            type="button"
-            data-bs-target="#cardCarousel"
-            data-bs-slide="prev"
-            (click)="previous()">
-            
-            <span class="fa fa-chevron-left" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button
-            class="carousel-control-next"
-            type="button"
-            data-bs-target="#cardCarousel"
-            data-bs-slide="next"
-            (click)="next()">
-
-            <span class="fa fa-chevron-right" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
         </div>
-      </ng-container>
+        
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #loader>
+  <div class="text-center mt-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
   </div>
-  
-  <ng-template #loader>
-    <div class="text-center mt-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  </ng-template>
-  
+</ng-template>

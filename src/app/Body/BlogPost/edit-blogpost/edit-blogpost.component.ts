@@ -20,6 +20,8 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
   id: string | null = null
   selectedCat?: string[]
   isImagePopUpVisible : boolean = false;
+  maxWords = 500;
+  wordCount = 0;
 
   categorysub$?: Observable<GetAllCategories[]>
   
@@ -123,4 +125,25 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
   }
 
 
+  onInputChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+
+    this.wordCount = value.length;
+
+    if (this.wordCount > this.maxWords) {
+      // Truncate characters if they exceed the maximum limit
+      inputElement.value = value.substring(0, this.maxWords);
+      if(this.model){
+        this.model.shortDescription = inputElement.value;
+      }
+      
+      this.wordCount = this.maxWords; // Update character count to max limit
+    } else {
+      if(this.model){
+        this.model.shortDescription = inputElement.value;
+      }
+      
+    }
+  }
 }
