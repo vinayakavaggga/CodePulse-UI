@@ -103,14 +103,11 @@ export class HomeComponent implements OnInit {
 
   filterBlogs(term: string): void {
     if (term) {
-      const searchTermLower = term.toLowerCase();
-
       this.filteredBlogs = this.groupedBlogs.map(group => ({
         category: group.category,
         blogs: group.blogs.map(blogArray => blogArray.filter(blog =>
-          blog.title.toLowerCase().includes(searchTermLower) ||
-          blog.shortDescription.toLowerCase().includes(searchTermLower) ||
-          group.category.toLowerCase().includes(searchTermLower) // Check in category name as well
+          blog.title.toLowerCase().includes(term.toLowerCase()) ||
+          blog.shortDescription.toLowerCase().includes(term.toLowerCase())
         )).filter(blogArray => blogArray.length > 0)
       })).filter(group => group.blogs.length > 0);
 

@@ -10,7 +10,7 @@
     </div>
   </div>
 
-  <div *ngIf="!loading && !errorMessage">
+  <div *ngIf="!loading &&  !errorMessage">
     <ng-container *ngIf="filteredBlogs.length > 0; else noResults">
       <div *ngFor="let group of filteredBlogs" class="shadow-lg p-3 mb-5 bg-white rounded"c>
         <h2 class="m-3">{{ group.category }}:</h2>
