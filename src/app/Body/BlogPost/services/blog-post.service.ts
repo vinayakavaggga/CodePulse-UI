@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { BlogPostModel } from '../Models/blogPost.model';
 import { UpdateCategoryModel } from '../../Component/Models/Update-category-request.model';
 import { updateBlogPostModel } from '../Models/update-blogPost.model';
+import { GetAuthorModel } from '../../Component/Models/get-author.model';
 
 @Injectable({
   providedIn: 'root'

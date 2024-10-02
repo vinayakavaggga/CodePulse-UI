@@ -32,6 +32,7 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
       FeaturedImageURL: '',
       DateCreated: new Date,
       Author: '',
+      authorId: '',
       IsVisible: true,
       Category:[]
     }

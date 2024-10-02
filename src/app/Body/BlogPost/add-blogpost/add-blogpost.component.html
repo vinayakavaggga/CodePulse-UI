@@ -63,10 +63,19 @@
         </div>
 
         <!-- Featured Image URL -->
-        <div class="mb-3">
-            <label for="FeaturedImageURL" class="form-label">Featured Image URL</label>
-            <input class="form-control" type="text" name="FeaturedImageURL" id="FeaturedImageURL" [(ngModel)]="model.FeaturedImageURL" #featuredImageURL="ngModel"
-            #FeaturedImageURL="ngModel" required
+        <div class="mt-2">
+            <label for="FeaturedImageURL" class="form-label"> Featured Image URL
+                <button type="button" class="btn btn-light m-5"(click)="OpenImagePopUp()"> Select Image</button>
+            </label>
+
+            <ng-container *ngIf="model.FeaturedImageURL !== ''">
+                <div>
+                    <img [src]="model.FeaturedImageURL" style="height: 250px;" class="my-2">
+                </div>
+            </ng-container>
+
+            <input class="form-control" type="text" name="FeaturedImageURL" id="FeaturedImageURL"
+                [(ngModel)]="model.FeaturedImageURL"#FeaturedImageURL="ngModel" required
                 [ngClass]="{'is-invalid': FeaturedImageURL.invalid && (FeaturedImageURL.dirty || FeaturedImageURL.touched)}">
             <div class="invalid-feedback" *ngIf="urlHandle.invalid && (FeaturedImageURL.dirty || FeaturedImageURL.touched)">
                 <small *ngIf="FeaturedImageURL.errors?.['required']">Image is required.</small>

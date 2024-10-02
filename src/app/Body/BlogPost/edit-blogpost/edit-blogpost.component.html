@@ -91,13 +91,29 @@
                     </div>
                 </div>
 
-                <div class="mt-2">
+                <!-- <div class="mt-2">
                     <label for="Author" class="form-label"> Author </label>
                     <input class="form-control" type="text" name="Author" id="Author" [(ngModel)]="model.author" #author="ngModel" required
                     [ngClass]="{'is-invalid': author.invalid && (author.dirty || author.touched)}">
                     <div class="invalid-feedback" *ngIf="author.invalid && (author.dirty || author.touched)">
                         <small *ngIf="author.errors?.['required']">Author is required.</small>
                     </div>
+                </div> -->
+
+                <div class="mt-2">
+                    <label for="Author" class="form-label"> Author </label>
+                    <ng-container *ngIf="authorsub$ | async as authors">
+                        <select #authorSelect class="form-control" [(ngModel)]="model.author"
+                        id="authors" (change)="onAuthorChange(authorSelect.value)" #author="ngModel" required
+                        [ngClass]="{'is-invalid': author.invalid && (author.dirty || author.touched)}">
+                            <option *ngFor="let author of authors" [value]="author.id" >
+                                {{author.authorName}}
+                            </option>
+                        </select>
+                        <div class="invalid-feedback" *ngIf="author.invalid && (author.dirty || author.touched)">
+                            <small *ngIf="author.errors?.['required']">Author is required.</small>
+                        </div>
+                    </ng-container>
                 </div>
 
                 <div class="form-check form-switch mt-2">

@@ -6,6 +6,7 @@ export interface addBlogPostModel{
     FeaturedImageURL: string,
     DateCreated: Date,
     Author: string,
+    authorId : string,
     IsVisible: boolean,
     Category: string[]
 }

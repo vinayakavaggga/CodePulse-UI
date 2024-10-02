@@ -9,6 +9,7 @@ export interface BlogPostModel{
     featuredImageURL: string,
     dateCreated: Date,
     author: string,
+    authorId : string,
     isVisible: boolean,
     categoryResponse: GetAllCategories[]
 }

@@ -9,6 +9,8 @@ import { GetAllCategories } from '../../Component/Models/get-category-request.mo
 import { UpdateCategoryModel } from '../../Component/Models/Update-category-request.model';
 import { updateBlogPostModel } from '../Models/update-blogPost.model';
 import { ImageService } from 'src/app/Shared/Image-Upload/image-selector/image.service';
+import { GetAuthorModel } from '../../Component/Models/get-author.model';
+import { HomeService } from '../../Public/Services/home.service';
 
 @Component({
   selector: 'app-edit-blogpost',
@@ -17,33 +19,47 @@ import { ImageService } from 'src/app/Shared/Image-Upload/image-selector/image.s
 })
 export class EditBlogpostComponent implements OnInit, OnDestroy {
 
+
   id: string | null = null
   selectedCat?: string[]
   isImagePopUpVisible : boolean = false;
   maxWords = 500;
   wordCount = 0;
+  author? : string
+  authorId? : string
 
   categorysub$?: Observable<GetAllCategories[]>
+  authorsub$? : Observable<GetAuthorModel[]>
   
-  updateModel? : UpdateCategoryModel
   model?:BlogPostModel
+  authorModel? : GetAuthorModel[]
 
   editSubscription?: Subscription
   updateSubscription?: Subscription
   getSubscrption?: Subscription
   deleteSubscrption? : Subscription
   imageSubscription? : Subscription
+  authorSubscription? : Subscription
 
   constructor(private route: ActivatedRoute,
     private editservices: BlogPostService,
     private categoryServices: CategoryService,
     private router: Router,
-    private imageService : ImageService)
+    private imageService : ImageService,
+    private publicService: HomeService)
   { }
   
   ngOnInit(): void {
 
     this.categorysub$ =  this.categoryServices.GetCategories();
+    this.authorsub$ = this.publicService.GetAuthor()
+
+    this.authorSubscription = this.publicService.GetAuthor().subscribe({
+      next: (resp) =>{
+        this.authorModel = resp
+      }
+    });
+    this.authorId = this.model?.id
 
     this.editSubscription = this.route.paramMap.subscribe({
       next: (parms) => {
@@ -66,16 +82,12 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
             }
           }
         })
-        
       }
     })
-
-    
-
   }
 
   OnSubmit() : void{
-    if(this.model && this.id){
+    if(this.model && this.id && this.authorId && this.author){
       var updateblogpost: updateBlogPostModel = {
         Title: this.model.title,
         ShortDescription: this.model.shortDescription,
@@ -83,7 +95,8 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
         UrlHandle: this.model.urlHandle,
         FeaturedImageURL: this.model.featuredImageURL,
         DateCreated: this.model.dateCreated,
-        Author: this.model.author,
+        Author: this.author,
+        authorId: this.authorId,
         IsVisible: this.model.isVisible,
         Category: this.selectedCat ?? []
       }
@@ -94,7 +107,6 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
         }
       })
     }
-
   }
 
   DeleteBlogPost(): void{
@@ -105,7 +117,6 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
         }
       })
     }
-    
   }
 
   OpenImagePopUp() : void{
@@ -144,6 +155,14 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
         this.model.shortDescription = inputElement.value;
       }
       
+    }
+  }
+
+  onAuthorChange(authorId: string) {
+    const selectedAuthor = this.authorModel?.find(author => author.id === authorId);
+    if (selectedAuthor) {
+      this.authorId = selectedAuthor.id;         // Save author ID
+      this.author = selectedAuthor.authorName; // Save author name
     }
   }
 }
