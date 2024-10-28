@@ -6,6 +6,8 @@ import { Observable, Subscription } from 'rxjs';
 import { CategoryService } from '../../Component/Services/category.service';
 import { GetAllCategories } from '../../Component/Models/get-category-request.model';
 import { ImageService } from 'src/app/Shared/Image-Upload/image-selector/image.service';
+import { GetAuthorModel } from '../../Component/Models/get-author.model';
+import { HomeService } from '../../Public/Services/home.service';
 
 @Component({
   selector: 'app-add-blogpost',
@@ -19,10 +21,16 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   categories$?: Observable<GetAllCategories[]>
   isImagePopUpVisible : boolean = false;
   imageSubscription? : Subscription;
+  authorsub$? : Observable<GetAuthorModel[]>
+  authorSubscription? : Subscription
+  authorModel? : GetAuthorModel[]
+  author? : string
+  authorId : string | any
 
   constructor(private blogPostService: BlogPostService,
     private router: Router,
     private imageService : ImageService,
+    private publicService: HomeService,
     private categoryservices: CategoryService){
     this.model = {
       Title: '',
@@ -40,6 +48,14 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.categories$ = this.categoryservices.GetCategories()
+    this.authorsub$ = this.publicService.GetAuthor()
+    this.authorSubscription = this.publicService.GetAuthor().subscribe({
+      next: (resp) =>{
+        this.authorModel = resp
+      }
+    });
+    this.authorId = this.model?.authorId
+
     this.imageSubscription = this.imageService.OnSelectImage().subscribe({
       next : (response) => {
         if(this.model){
@@ -51,6 +67,7 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   }
   
   OnSubmit(): void{
+    this.model.authorId = this.authorId
     this.AddblogPostSubscription = this.blogPostService.AddBlogPost(this.model)
     .subscribe({
       next: (response) =>
@@ -66,9 +83,19 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
     this.isImagePopUpVisible = false
   }
 
+  onAuthorChange(authorId: string) {
+    const selectedAuthor = this.authorModel?.find(author => author.id === authorId);
+    if (selectedAuthor) {
+      this.authorId = selectedAuthor.id;         // Save author ID
+      this.author = selectedAuthor.authorName; // Save author name
+      console.log(selectedAuthor.id , selectedAuthor.authorName)
+    }
+  }
+
   ngOnDestroy(): void {
     this.AddblogPostSubscription?.unsubscribe();
     this.imageSubscription?.unsubscribe();
+    this.authorSubscription?.unsubscribe();
   }
 
 }

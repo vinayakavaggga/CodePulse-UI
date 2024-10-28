@@ -93,13 +93,20 @@
         </div>
 
         <!-- Author -->
-        <div class="mb-3">
-            <label for="Author" class="form-label">Author</label>
-            <input class="form-control" type="text" name="Author" id="Author" [(ngModel)]="model.Author" #author="ngModel" required
+        <div class="mt-2">
+            <label for="Author" class="form-label"> Author </label>
+            <ng-container *ngIf="authorsub$ | async as authors">
+                <select #authorSelect class="form-control" [(ngModel)]="model.Author"
+                id="authors" (change)="onAuthorChange(authorSelect.value)" #author="ngModel" required
                 [ngClass]="{'is-invalid': author.invalid && (author.dirty || author.touched)}">
-            <div class="invalid-feedback" *ngIf="author.invalid && (author.dirty || author.touched)">
-                <small *ngIf="author.errors?.['required']">Author is required.</small>
-            </div>
+                    <option *ngFor="let author of authors" [value]="author.id" >
+                        {{author.authorName}}
+                    </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="author.invalid && (author.dirty || author.touched)">
+                    <small *ngIf="author.errors?.['required']">Author is required.</small>
+                </div>
+            </ng-container>
         </div>
 
         <!-- Is Visible -->
