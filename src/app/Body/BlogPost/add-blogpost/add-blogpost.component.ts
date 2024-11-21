@@ -24,8 +24,12 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   authorsub$? : Observable<GetAuthorModel[]>
   authorSubscription? : Subscription
   authorModel? : GetAuthorModel[]
-  author? : string
+  author : string | any
   authorId : string | any
+  isLoading = false;
+  successMessage = '';
+  errorMessage = '';
+
 
   constructor(private blogPostService: BlogPostService,
     private router: Router,
@@ -67,11 +71,26 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   }
   
   OnSubmit(): void{
+    this.isLoading = true;
     this.model.authorId = this.authorId
+    this.model.Author = this.author
     this.AddblogPostSubscription = this.blogPostService.AddBlogPost(this.model)
     .subscribe({
-      next: (response) =>
-        this.router.navigateByUrl('/admin/blogpost')
+      next: (response) => {
+        this.isLoading = false;
+        this.successMessage = 'Blog post added successfully!';
+        setTimeout(()=> {
+          this.successMessage = '';
+          this.router.navigateByUrl('/admin/blogpost');
+        }, 3000);
+      },
+      error: (err) => {
+          this.isLoading = false;
+          this.errorMessage = 'Failed to add blog post.';
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 3000)
+      }
     })
   }
 

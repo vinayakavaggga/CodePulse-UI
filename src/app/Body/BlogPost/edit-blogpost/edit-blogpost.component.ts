@@ -41,6 +41,11 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
   imageSubscription? : Subscription
   authorSubscription? : Subscription
 
+  isLoading = false;
+  successMessage = '';
+  errorMessage = '';
+
+
   constructor(private route: ActivatedRoute,
     private editservices: BlogPostService,
     private categoryServices: CategoryService,
@@ -87,6 +92,7 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
   }
 
   OnSubmit() : void{
+    this.isLoading = true;
     if(this.model && this.id && this.authorId && this.author){
       var updateblogpost: updateBlogPostModel = {
         Title: this.model.title,
@@ -100,10 +106,23 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
         IsVisible: this.model.isVisible,
         Category: this.selectedCat ?? []
       }
-
+      
       this.updateSubscription = this.editservices.UpdateBlogPostByid(this.id, updateblogpost).subscribe({
         next: (response) => {
-          this.router.navigateByUrl('/admin/blogpost');
+          this.isLoading = false;
+          this.successMessage = 'BlogPost Updated Sucessfully!';
+          setTimeout(() =>{
+            this.successMessage = ''
+            this.router.navigateByUrl('/admin/blogpost');
+          }, 3000)
+          
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage = 'An error occured while updating data';
+          setTimeout (() => {
+            this.errorMessage = '';
+          }, 3000)
         }
       })
     }

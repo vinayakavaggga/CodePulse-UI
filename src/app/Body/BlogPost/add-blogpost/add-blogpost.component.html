@@ -1,6 +1,7 @@
 <div class="container">
-    <h1> Add BlogPost</h1>
 
+    <h1> Add BlogPost</h1>
+    
     <form #form="ngForm" (ngSubmit)="OnSubmit()" novalidate>
 
         <!-- Title -->
@@ -135,6 +136,23 @@
         </div>
 
     </form>
+    
+    <!-- Loader -->
+    <div *ngIf="isLoading" class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+  
+    <!-- Success Alert -->
+    <div *ngIf="successMessage" class="alert alert-success" role="alert">
+        {{ successMessage }}
+    </div>
+  
+    <!-- Error Alert -->
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+    </div>
 </div>
 
 <!-- Image Selector Pop-Up -->
