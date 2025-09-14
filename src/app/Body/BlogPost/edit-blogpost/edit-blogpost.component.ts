@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { BlogPostService } from '../services/blog-post.service';
@@ -11,6 +11,9 @@ import { updateBlogPostModel } from '../Models/update-blogPost.model';
 import { ImageService } from 'src/app/Shared/Image-Upload/image-selector/image.service';
 import { GetAuthorModel } from '../../Component/Models/get-author.model';
 import { HomeService } from '../../Public/Services/home.service';
+import { ConfirmationPopupComponent } from 'src/app/Shared/Confirmation-popup-message/confirmation-popup/confirmation-popup.component';
+
+declare var bootstrap: any; 
 
 @Component({
   selector: 'app-edit-blogpost',
@@ -19,6 +22,9 @@ import { HomeService } from '../../Public/Services/home.service';
 })
 export class EditBlogpostComponent implements OnInit, OnDestroy {
 
+  @ViewChild(ConfirmationPopupComponent) confirmationPopup?: ConfirmationPopupComponent;
+
+  selectedPostId: number | null = null;
 
   id: string | null = null
   selectedCat?: string[]
@@ -43,6 +49,8 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
 
   isLoading = false;
   successMessage = '';
+  deleteMessage = '';
+  redirectingMessage = '';
   errorMessage = '';
 
 
@@ -110,7 +118,16 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
       this.updateSubscription = this.editservices.UpdateBlogPostByid(this.id, updateblogpost).subscribe({
         next: (response) => {
           this.isLoading = false;
-          this.successMessage = 'BlogPost Updated Sucessfully!';
+            this.successMessage = 'BlogPost Updated Sucessfully!';
+            let secondsLeft = 3;
+            this.redirectingMessage = `You are being redirected to blogpost page in ${secondsLeft} seconds......`;
+            const interval = setInterval(() => {
+            secondsLeft--;
+            this.redirectingMessage = `You are being redirected to blogpost page in ${secondsLeft} seconds......`;
+            if (secondsLeft === 0) {
+              clearInterval(interval);
+            }
+            }, 1000);
           setTimeout(() =>{
             this.successMessage = ''
             this.router.navigateByUrl('/admin/blogpost');
@@ -128,11 +145,49 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
     }
   }
 
+  openDeleteConfirm() {
+    //this.id = postId;
+
+    const modalElement = document.getElementById('confirmModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+  }
+
+  // handle Yes / No from modal
+  handleConfirmation(choice: boolean) {
+    if (choice) {
+      this.DeleteBlogPost();
+    } else {
+    this.isLoading = false;
+    this.deleteMessage = '';
+    this.redirectingMessage = '';
+    }
+  }
+
+  onPopupClose() {
+    this.isLoading = false;   // Reset loader if closed with X
+  }
+
   DeleteBlogPost(): void{
     if(this.id){
       this.deleteSubscrption = this.editservices.DeleteBlogPost(this.id).subscribe({
         next: (response) => {
-          this.router.navigateByUrl('/admin/blogpost');
+          this.isLoading = false;
+            this.deleteMessage = 'BlogPost Deleted Sucessfully!';
+            let secondsLeft = 3;
+            this.redirectingMessage = `You are being redirected to blogpost page in ${secondsLeft} seconds......`;
+            const interval = setInterval(() => {
+            secondsLeft--;
+            this.redirectingMessage = `You are being redirected to blogpost page in ${secondsLeft} seconds......`;
+            if (secondsLeft === 0) {
+              clearInterval(interval);
+            }
+            }, 1000);
+          setTimeout(() =>{
+            this.deleteMessage = ''
+            this.router.navigateByUrl('/admin/blogpost');
+          }, 3000)
+          
         }
       })
     }

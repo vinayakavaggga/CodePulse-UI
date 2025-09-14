@@ -28,6 +28,7 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   authorId : string | any
   isLoading = false;
   successMessage = '';
+  redirectingMessage = '';
   errorMessage = '';
 
 
@@ -79,6 +80,15 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
       next: (response) => {
         this.isLoading = false;
         this.successMessage = 'Blog post added successfully!';
+        let secondsLeft = 3;
+            this.redirectingMessage = `You are being redirected to blogpost page in ${secondsLeft} seconds......`;
+            const interval = setInterval(() => {
+            secondsLeft--;
+            this.redirectingMessage = `You are being redirected to blogpost page in ${secondsLeft} seconds......`;
+            if (secondsLeft === 0) {
+              clearInterval(interval);
+            }
+            }, 1000);
         setTimeout(()=> {
           this.successMessage = '';
           this.router.navigateByUrl('/admin/blogpost');

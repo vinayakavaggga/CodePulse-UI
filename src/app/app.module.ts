@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -18,6 +17,7 @@ import { HomeComponent } from './Body/Public/home/home.component';
 import { BlogDetailsComponent } from './Body/Public/blog-details/blog-details.component';
 import { FooterComponent } from './components/footer/footer/footer.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { ConfirmationPopupComponent } from './Shared/Confirmation-popup-message/confirmation-popup/confirmation-popup.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,8 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     ImageSelectorComponent,
     HomeComponent,
     BlogDetailsComponent,
-    FooterComponent
+    FooterComponent,
+    ConfirmationPopupComponent
   ],
   imports: [
     BrowserModule,
